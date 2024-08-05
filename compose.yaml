@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: 'bank'
+    environment:
+      - 'POSTGRES_DB=bankdb'
+      - 'POSTGRES_PASSWORD=12345'
+      - 'POSTGRES_USER=user'
+    ports:
+      - '5432:5432'

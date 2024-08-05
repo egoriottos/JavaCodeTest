@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bankdb
+    username: user
+    password: 12345
+  liquibase:
+    user: user
+    password: 12345
+    change-log: 'classpath:db/changelog/db-init.yaml'
