@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 @RequiredArgsConstructor
 @Service
 public class WalletService {
@@ -24,25 +25,25 @@ public class WalletService {
         return walletRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Wallet with uuid " + uuid + " not found"));
     }
-
     @Transactional
-    public Wallet deposit(UUID uuid, BigDecimal amount) {
-        var wallet = walletRepository.findById(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("Wallet with uuid " + uuid + " not found"));
-        wallet.setBalance(wallet.getBalance().add(amount));
-        walletRepository.save(wallet);
-        WalletTransaction transaction = new WalletTransaction();
-        transaction.setId(UUID.randomUUID());
-        transaction.setWalletId(uuid);
-        transaction.setOperationType(OperationType.DEPOSIT);
-        transaction.setAmount(amount);
-        transaction.setCreatedAt(LocalDateTime.now());
-        transactionRepository.save(transaction);
-        return wallet;
+    public Wallet deposit( UUID uuid,BigDecimal amount) {
+            var wallet = walletRepository.findById(uuid)
+                    .orElseThrow(() -> new EntityNotFoundException("Wallet with uuid " + uuid + " not found"));
+            wallet.setBalance(wallet.getBalance().add(amount));
+            walletRepository.save(wallet);
+            WalletTransaction transaction = new WalletTransaction();
+            transaction.setId(UUID.randomUUID());
+            transaction.setWalletId(uuid);
+            transaction.setOperationType(OperationType.DEPOSIT);
+            transaction.setAmount(amount);
+            transaction.setCreatedAt(LocalDateTime.now());
+            transactionRepository.save(transaction);
+            return wallet;
+
     }
 
     @Transactional
-    public Wallet withdraw(UUID uuid, BigDecimal amount) {
+    public Wallet withdraw( UUID uuid, BigDecimal amount) {
         var wallet = walletRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Wallet with uuid " + uuid + " not found"));
         wallet.setBalance(wallet.getBalance().subtract(amount));
         if (wallet.getBalance().compareTo(BigDecimal.ZERO) < 0) {
